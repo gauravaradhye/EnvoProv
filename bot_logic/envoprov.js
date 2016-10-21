@@ -97,7 +97,7 @@ var deployVm = function(bot, message) {
                     pattern: bot.utterances.yes,
                     callback: function(response, convo) {
                         var vm = data.single_vm;
-                        convo.say('Here it is!\n IP: ' + vm.IP + ' \nEnvironment: ' + vm.Environment);
+                        convo.say('Here it is!\n IP: ' + vm.IP + ' \nEnvironment: ' + vm.Environment + ' \nID: ' + vm.ID);
                         convo.next();
                     }
                 }, {
@@ -139,7 +139,7 @@ var deployVm = function(bot, message) {
                     if (service.checkNewCredentials(newUsername, newPassword, data.new_credentials)) {
                         bot.reply(message, 'Thanks!. I will now provision the VM for you');
                         var vm = data.single_vm;
-                        bot.reply(message, 'Here it is!\n IP: ' + vm.IP + ' \nEnvironment: ' + vm.Environment);
+                        bot.reply(message, 'Here it is!\n IP: ' + vm.IP + ' \nEnvironment: ' + vm.Environment + ' \nID: ' + vm.ID);
                         convo.stop();
                     } else {
                         bot.reply(message, 'Wrong credentials. Try again!');
@@ -413,7 +413,7 @@ botcontroller.hears(['delete(.*)cluster', 'delete(.*)instance'], ['direct_messag
             convo.addQuestion('Are you sure you want to delete?', [{
                 pattern: bot.utterances.yes,
                 callback: function(response, convo) {
-                    bot.reply(message, "Done! The cluster has been deleted\n");
+                    bot.reply(message, "Done! Delete is successful\n");
                     convo.stop();
                 }
             }, {
@@ -548,6 +548,6 @@ botcontroller.hears('.*', ['direct_message', 'direct_mention'], function(bot, me
     wit.hears('list resources', 0.5, listResources);
 
     wit.otherwise(function(bot, message) {
-        bot.reply(message, 'You are so intelligent, and I am so simple. I don\'t understnd')
+        bot.reply(message, 'What can I do for you?')
     })
 });
