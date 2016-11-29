@@ -46,7 +46,7 @@
       lineinfile: dest=/root/.bashrc line='export WitToken={{lookup('env','WitToken')}}' insertafter='EOF' state=present
 
     - name: Adding the path in the bashrc files
-      lineinfile: dest=/root/.bashrc line='export EnvoProvToken={{lookup('env','EnvoProvToken')}}' insertafter='EOF' state=present
+      lineinfile: dest=/root/.bashrc line='export SLACK_TOKEN={{lookup('env','SLACK_TOKEN')}}' insertafter='EOF' state=present
 
     - name: Source the bashrc file
       shell: . ~/.bashrc
