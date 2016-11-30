@@ -1,8 +1,16 @@
 ---
 
 - hosts: AppServer
-  tasks:
+  gather_facts: false
+  sudo: yes
+  pre_tasks:
+    - name: Update apt
+      raw: apt-get update
 
+    - name: Install python
+      raw: apt-get -y install python-simplejson
+
+  tasks:
     - name: Updating apt cache
       sudo: yes
       apt: update_cache=true cache_valid_time=3600
@@ -52,7 +60,7 @@
       shell: . ~/.bashrc
 
     - name: Cloning the App Repository
-      git: repo=https://github.com/EnvoProv/EnvoProv.git version=Deploy dest=/src/App
+      git: repo=https://github.com/EnvoProv/EnvoProv.git version=master dest=/src/App
 
     - name: Build Essential package
       sudo: yes
@@ -62,11 +70,14 @@
       npm: path=/src/App/
 
     - name: Copy chef server key
-      copy: src=./gauravaradhye.pem dest=/src/App/.chef mode=0600
+      copy: src=./chefKey.pem dest=/src/App/.chef mode=0600
 
     - name: Source the bashrc file
       shell: . ~/.bashrc
 
-    - name: "Start example Node.js app."
-      command: forever start /src/App/bot_logic/envoprov.js
+    - name: "Copy set Tokens shell script file."
+      copy:  src=./setTokens.sh dest=/src/App/ mode=777
+
+    - name: Run setTokens.sh
+      command: sh /src/App/setTokens.sh
 
